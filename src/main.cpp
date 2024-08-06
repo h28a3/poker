@@ -192,6 +192,5 @@ int main(void) {
             }
             judge *= players[i].chip;
         }
-        break;
     }
 }
