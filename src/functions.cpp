@@ -1,6 +1,6 @@
 #include "header.h"
 
-void initialization() {
+void initialization() { //å±±æœ­ç”Ÿæˆ
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     srand((unsigned int)time(NULL));
@@ -13,7 +13,7 @@ void initialization() {
     }
 }
 
-int score(vector<card> v) {
+int score(vector<card> v) { //ã‚¹ã‚³ã‚¢è¨ˆç®—
     vector<int> set, sorted;
     vector<char> set_c;
     for (card i : v) {
@@ -37,29 +37,29 @@ int score(vector<card> v) {
     auto result2 = unique(set_c.begin(), set_c.end());
     set_c.erase(result2, set_c.end());
 
-    if (set.size() == 5 && sorted[0] == 10 && set_c.size() == 1) //ƒƒCƒ„ƒ‹ƒXƒgƒŒ[ƒgƒtƒ‰ƒbƒVƒ…
+    if (set.size() == 5 && sorted[0] == 10 && set_c.size() == 1) //ãƒ­ã‚¤ãƒ¤ãƒ«ã‚¹ãƒˆãƒ¬ãƒ¼ãƒˆãƒ•ãƒ©ãƒƒã‚·ãƒ¥
         return 9;
-    else if (set.size() == 5 && sorted[0] + 4 == sorted[4] && set_c.size() == 1) //ƒXƒgƒŒ[ƒgEƒtƒ‰ƒbƒVƒ…
+    else if (set.size() == 5 && sorted[0] + 4 == sorted[4] && set_c.size() == 1) //ã‚¹ãƒˆãƒ¬ãƒ¼ãƒˆãƒ»ãƒ•ãƒ©ãƒƒã‚·ãƒ¥
         return 8;
-    else if (sorted[0] == sorted[3] || sorted[1] == sorted[4]) //ƒtƒHƒAEƒJ[ƒh
+    else if (sorted[0] == sorted[3] || sorted[1] == sorted[4]) //ãƒ•ã‚©ã‚¢ãƒ»ã‚«ãƒ¼ãƒ‰
         return 7;
-    else if (set.size() == 2) //ƒtƒ‹ƒnƒEƒX
+    else if (set.size() == 2) //ãƒ•ãƒ«ãƒã‚¦ã‚¹
         return 6;
-    else if (set_c.size() == 1) //ƒtƒ‰ƒbƒVƒ…
+    else if (set_c.size() == 1) //ãƒ•ãƒ©ãƒƒã‚·ãƒ¥
         return 5;
-    else if (set.size() == 5 && sorted[0] + 4 == sorted[4]) //ƒXƒgƒŒ[ƒg
+    else if (set.size() == 5 && sorted[0] + 4 == sorted[4]) //ã‚¹ãƒˆãƒ¬ãƒ¼ãƒˆ
         return 4;
-    else if (sorted[0] == sorted[2] || sorted[1] == sorted[3] || sorted[2] == sorted[4]) //ƒXƒŠ[ƒJ[ƒh
+    else if (sorted[0] == sorted[2] || sorted[1] == sorted[3] || sorted[2] == sorted[4]) //ã‚¹ãƒªãƒ¼ã‚«ãƒ¼ãƒ‰
         return 3;
-    else if (set.size() == 3) //ƒcƒEEƒyƒA
+    else if (set.size() == 3) //ãƒ„ã‚¦ãƒ»ãƒšã‚¢
         return 2;
-    else if (set.size() == 4) //ƒƒ“EƒyƒA
+    else if (set.size() == 4) //ãƒ¯ãƒ³ãƒ»ãƒšã‚¢
         return 1;
     else
         return 0;
 }
 
-vector<int> strategy(vector<card> v) {
+vector<int> strategy(vector<card> v) { //COMã®ã‚«ãƒ¼ãƒ‰äº¤æ›æˆ¦ç•¥
     vector<int> ans, set_num, sorted;
     vector<char> e, set_c;
     for (card i : v) {
@@ -134,4 +134,32 @@ vector<int> strategy(vector<card> v) {
         ans.push_back(i);
     }
     return ans;
+}
+
+void show_card(int n, vector<card> cards) { //ã‚«ãƒ¼ãƒ‰å‡ºåŠ›
+    if (n == 0) {
+        cout << "ã‚ãªãŸ";
+    }
+    else {
+        cout << "COM" << n;
+    }
+    cout << "ã®ã‚«ãƒ¼ãƒ‰ã¯";
+    for (int i = 0;i < 5;i++) {
+        if (cards[i].c == 's') cout << "ã‚¹ãƒšãƒ¼ãƒ‰";
+        if (cards[i].c == 'h') cout << "ãƒãƒ¼ãƒˆ";
+        if (cards[i].c == 'd') cout << "ãƒ€ã‚¤ãƒ¤";
+        if (cards[i].c == 'c') cout << "ã‚¯ãƒ­ãƒ¼ãƒãƒ¼";
+        cout << cards[i].num << "ï¼Œ";
+    }
+    cout << "ã§ã™ï¼\n";
+}
+
+void show_chip(int n, int chip) { //ãƒãƒƒãƒ—ã®æ®‹ã‚Šæšæ•°å‡ºåŠ›
+    if (n == 0) {
+        cout << "ã‚ãªãŸ";
+    }
+    else {
+        cout << "COM" << n;
+    }
+    cout << "ã®ãƒãƒƒãƒ—ã¯æ®‹ã‚Š" << chip << "æšã§ã™\n";
 }
