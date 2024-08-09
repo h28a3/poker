@@ -1,5 +1,3 @@
-#include <iostream>
-#include <cstdlib>
 #include <ctime>
 #include <vector>
 #include <algorithm>
@@ -31,3 +29,5 @@ extern vector<card> deck;
 void initialization(void);
 int score(vector<card> v);
 vector<int> strategy(vector<card> v);
+void show_card(int n, vector<card> cards);
+void show_chip(int n, int chip);
