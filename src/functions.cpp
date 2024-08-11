@@ -163,3 +163,42 @@ void show_chip(int n, int chip) { //チップの残り枚数出力
     }
     cout << "のチップは残り" << chip << "枚です\n";
 }
+
+void bid_or_pass(int &bet, int &flag, int &n, player *players) {
+    int tmp = bet;
+    for (int i = 1;i < N;i++) {
+        if (player_score[i] > 2) { //COMはスリーカードより良い役のときはビッド
+            if (bet >= players[i].chip) {
+                cout << "COM" << i << "：オールイン\n";
+                flag++;
+                continue;
+            }
+            cout << "COM" << i << "：ビッド，";
+            int r = rand() % (MAX - bet) + 1;
+            r = min(r, players[i].chip);
+            cout << r << "枚追加\n";
+            bet += r;
+            n = i;
+            flag = 0;
+            break;
+        }
+        else {
+            cout << "COM" << i << "：パス\n";
+            flag++;
+        }
+    }
+
+    if (tmp == bet) {
+        cout << "パスorビッド(0：パス，1：ビッド)";
+        int input;
+        cin >> input;
+        flag++;
+        if (input == 1) {
+            cout << "何枚追加しますか？(" << min(MAX, players[0].chip) - bet << "枚まで追加できます．)";
+            cin >> input;
+            bet += input;
+            n = 0;
+            flag = 0;
+        }
+    }
+}
