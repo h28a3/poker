@@ -1,4 +1,23 @@
 # poker
+## hands (in order of strength)
+1. Royal Straight Flush  
+   The highest ranked flush of the same kind, 10, J, Q, K, A.
+2. Straight Flush  
+   A straight flush is a sequence of cards of the same kind with the numbers in the same order. However, it does not follow as ...K・A・2...
+3. Four of a kind  
+   A set of four cards of the same rank.
+4. Full House  
+   A hand with three tied hands and two tied hands. When two players have the same hand, they are compared in triples, and the higher ranked player wins.
+5. Flush  
+A flush is a set of five cards of the same kind.
+6. Straight  
+A sequence of five cards, regardless of suit type.
+7. Three of a kind  
+Three cards of the same rank.
+8. Two pair  
+   Two pairs of equal cards of two cards each. If they are the same, the higher pair is compared and the higher pair wins. If they are also equal, the lower pair is compared and the higher pair wins. If they are the same, the higher pair with ♠ wins.
+9. One pair  
+Two cards of the same rank. When two hands are equal, the pairs are compared, and the higher ranked pair wins. If they are also equal, the player with the ♠ in the pair wins.
 
 ## rules
 1. Each player puts one chip on the field as a participation chip.
@@ -14,3 +33,6 @@
 11. The auction ends when one round has passed without anyone raising against the best bid. The hands are revealed and compared with the other players. The player with the strongest poker hand wins all the chips on the table.
 12. The same is also true if all other players have made a drop.
 13. The game continues in this manner for several rounds, and eventually the players with the most chips are placed first, second, and third ..., in that order.
+
+
+Reference:https://www.nintendo.com/jp/others/playing_cards/howtoplay/poker/index.html
