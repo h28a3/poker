@@ -138,30 +138,30 @@ vector<int> strategy(vector<card> v) { //COMのカード交換戦略
 
 void show_card(int n, vector<card> cards) { //カード出力
     if (n == 0) {
-        cout << "あなた";
+        cout << "Your ";
     }
     else {
-        cout << "COM" << n;
+        cout << "COM" << n << "'s ";
     }
-    cout << "のカードは";
+    cout << "cards is ";
     for (int i = 0;i < 5;i++) {
-        if (cards[i].c == 's') cout << "スペード";
-        if (cards[i].c == 'h') cout << "ハート";
-        if (cards[i].c == 'd') cout << "ダイヤ";
-        if (cards[i].c == 'c') cout << "クローバー";
-        cout << cards[i].num << "，";
+        if (cards[i].c == 's') cout << "spade";
+        if (cards[i].c == 'h') cout << "heart";
+        if (cards[i].c == 'd') cout << "diamond";
+        if (cards[i].c == 'c') cout << "club";
+        cout << cards[i].num << ", ";
     }
-    cout << "です．\n";
+    cout << ".\n";
 }
 
 void show_chip(int n, int chip) { //チップの残り枚数出力
     if (n == 0) {
-        cout << "あなた";
+        cout << "You have";
     }
     else {
-        cout << "COM" << n;
+        cout << "COM" << n << " has";
     }
-    cout << "のチップは残り" << chip << "枚です\n";
+    cout << chip << " chip(s) left.\n";
 }
 
 void bid_or_pass(int &bet, int &flag, int &n, player *players) {
@@ -169,32 +169,32 @@ void bid_or_pass(int &bet, int &flag, int &n, player *players) {
     for (int i = 1;i < N;i++) {
         if (player_score[i] > 2) { //COMはスリーカードより良い役のときはビッド
             if (bet >= players[i].chip) {
-                cout << "COM" << i << "：オールイン\n";
+                cout << "COM" << i << ": all in\n";
                 flag++;
                 continue;
             }
-            cout << "COM" << i << "：ビッド，";
+            cout << "COM" << i << ": bid，";
             int r = rand() % (MAX - bet) + 1;
             r = min(r, players[i].chip);
-            cout << r << "枚追加\n";
+            cout << "add " << r << " more.\n";
             bet += r;
             n = i;
             flag = 0;
             break;
         }
         else {
-            cout << "COM" << i << "：パス\n";
+            cout << "COM" << i << ": pass\n";
             flag++;
         }
     }
 
     if (tmp == bet) {
-        cout << "パスorビッド(0：パス，1：ビッド)";
+        cout << "pass or bid(0: pass，1: bid)";
         int input;
         cin >> input;
         flag++;
         if (input == 1) {
-            cout << "何枚追加しますか？(" << min(MAX, players[0].chip) - bet << "枚まで追加できます．)";
+            cout << "How many would you like to add?(Up to " << min(MAX, players[0].chip) - bet << " can be added.)";
             cin >> input;
             bet += input;
             n = 0;
