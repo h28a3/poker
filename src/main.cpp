@@ -36,19 +36,19 @@ int main(void) {
                 n = i;
                 if (player_score[i] > 4) { //COMはフラッシュより良い役のときはレイズ
                     if (bet >= players[i].chip) {
-                        cout << "COM" << i << "：オールイン\n";
+                        cout << "COM" << i << ": all in\n";
                         flag++;
                         continue;
                     }
-                    cout << "COM" << i << "：レイズ，";
+                    cout << "COM" << i << ": raise, ";
                     int r = rand() % 4 + 1;
                     r = min(r, players[i].chip);
-                    cout << r << "枚追加\n";
+                    cout << "add" << r << " more.\n";
                     bet += r;
                     flag = 0;
                 }
                 else {
-                    cout << "COM" << i << "：コール\n";
+                    cout << "COM" << i << ": call\n";
                     flag++;
                 }
             }
@@ -58,28 +58,28 @@ int main(void) {
             n = (n + 1) % N;
             if (player_score[n] > 5 && n != 0) {
                 if (bet >= players[n].chip) {
-                    cout << "COM" << n << "：オールイン\n";
+                    cout << "COM" << n << ": all in\n";
                     flag++;
                     continue;
                 }
-                cout << "COM" << n << "：レイズ，";
+                cout << "COM" << n << ": raise, ";
                 int r = rand() % (MAX - bet) + 1;
                 r = min(r, players[n].chip);
-                cout << r << "枚追加\n";
+                cout << "add" << r << " more.\n";
                 bet += r;
                 flag = 0;
             }
             else if (n != 0) {
-                cout << "COM" << n << "：コール\n";
+                cout << "COM" << n << ": call\n";
                 flag++;
             }
             else {
-                cout << "コールorレイズ(0：コール，1：レイズ)";
+                cout << "call or raise(0: call, 1: raise)";
                 int input;
                 cin >> input;
                 flag++;
                 if (input == 1) {
-                    cout << "何枚追加しますか？(" << min(MAX, players[0].chip) - bet << "枚まで追加できます．)";
+                    cout << "How many chips would you like to add?(Up to" << min(MAX, players[0].chip) - bet << "can be added.)";
                     cin >> input;
                     bet += input;
                     flag = 0;
@@ -96,7 +96,7 @@ int main(void) {
         }
 
         int rest = 52 - 5 * N; //山札の残り枚数
-        cout << "何枚カードを交換しますか？";
+        cout << "How many cards would you like to exchange?";
         cin >> n;
         rest -= n;
         if (n == 5) { //5枚全て交換するとき
@@ -107,7 +107,7 @@ int main(void) {
             }
         }
         else if (n > 0) {
-            cout << "何枚目を交換しますか？(空白区切りで入力)";
+            cout << "Which card(s) would you like to replace? (Enter separated by spaces)";
             for (int i = 0;i < n;i++) {
                 int rep;
                 cin >> rep;
@@ -130,7 +130,7 @@ int main(void) {
                     initialization();
                 }
             }
-            cout << "COM" << i << "：" << rep.size() << "枚交換\n";
+            cout << "COM" << i << ": exchange " << rep.size() << " cards.\n";
         }
 
         n = 0;
@@ -161,10 +161,10 @@ int main(void) {
                 if (player_score[i] == winner) {
                     players[i].chip += sum;
                     if (i == 0) {
-                        cout << "プレイヤーの勝利\n";
+                        cout << "player win\n";
                     }
                     else {
-                        cout << "COM" << i << "の勝利\n";
+                        cout << "COM" << i << " wins\n";
                     }
                 }
             }
@@ -185,10 +185,10 @@ int main(void) {
                     if (card_sum[i] == max) {
                         players[i].chip += sum;
                         if (i == 0) {
-                            cout << "プレイヤーの勝利\n";
+                            cout << "player win\n";
                         }
                         else {
-                            cout << "COM" << i << "の勝利\n";
+                            cout << "COM" << i << " wins\n";
                         }
                     }
                 }
@@ -199,14 +199,14 @@ int main(void) {
                     if (card_sum[i] == max) {
                         players[i].chip += sum / n;
                         if (i == 0) {
-                            cout << "プレイヤーと";
+                            cout << "player and";
                         }
                         else {
-                            cout << "COM" << i << "と";
+                            cout << "COM" << i << " and";
                         }
                     }
                 }
-                cout << "の勝利\n";
+                cout << " win\n";
             }
         }
         for (int i = 0;i < N;i++) {
