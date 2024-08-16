@@ -80,26 +80,28 @@ vector<int> strategy(vector<card> v) { //COMのカード交換戦略
     if (set_c.size() == 1 || set_num.size() == 2) {
         return ans;
     }
-
-    if (set_c.size() == 2) {
+    else if (set_num.size() < 5) {
+        for (int i = 0;i < 5;i++) {
+            int cnt = count(sorted.begin(), sorted.end(), sorted[i]);
+            if (cnt == 1) {
+                ans.push_back(i);
+            }
+        }
+        return ans;
+    }
+    else if ((set_c.size() == 2) && (count(e.begin(),e.end(),set_c[0]) == 1 || count(e.begin(), e.end(), set_c[0]) == 4)) {
         for (char c : set_c) {
             int cnt = count(e.begin(), e.end(), c);
-            if (cnt == 2) {
-                break;
-            }
-            else if (cnt == 1) {
+            if (cnt == 1) {
                 for (int i = 0;i < 5;i++) {
                     if (v[i].c == c) ans.push_back(i);
                     break;
                 }
             }
         }
-        if (ans.size() > 0) {
-            return ans;
-        }
+        return ans;
     }
-
-    if (set_num.size() == 5) {
+    else if (set_num.size() == 5) {
         if (sorted[0] + 4 == sorted[4]) {
             return ans;
         }
@@ -119,17 +121,6 @@ vector<int> strategy(vector<card> v) { //COMのカード交換戦略
             return ans;
         }
     }
-
-    if (set_num.size() < 5) {
-        for (int i : set_num) {
-            int cnt = count(set_num.begin(), set_num.end(), i);
-            if (cnt == 1) {
-                ans.push_back(i);
-            }
-        }
-        return ans;
-    }
-
     for (int i = 0;i < 5;i++) {
         ans.push_back(i);
     }
@@ -156,10 +147,10 @@ void show_card(int n, vector<card> cards) { //カード出力
 
 void show_chip(int n, int chip) { //チップの残り枚数出力
     if (n == 0) {
-        cout << "You have";
+        cout << "You have ";
     }
     else {
-        cout << "COM" << n << " has";
+        cout << "COM" << n << " has ";
     }
     cout << chip << " chip(s) left.\n";
 }
