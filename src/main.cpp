@@ -79,7 +79,7 @@ int main(void) {
                 cin >> input;
                 flag++;
                 if (input == 1) {
-                    cout << "How many chips would you like to add?(Up to" << min(MAX, players[0].chip) - bet << "can be added.)";
+                    cout << "How many chips would you like to add?(Up to " << min(MAX, players[0].chip) - bet << " can be added.)";
                     cin >> input;
                     bet += input;
                     flag = 0;
@@ -87,7 +87,7 @@ int main(void) {
             }
         }
 
-        int sum = 0; //場に出ているチップ
+        int sum = 0; //場に出ているチップの総数
 
         for (int i = 0;i < N;i++) {
             int a = min(bet, players[i].chip);
@@ -130,12 +130,18 @@ int main(void) {
                     initialization();
                 }
             }
-            cout << "COM" << i << ": exchange " << rep.size() << " cards.\n";
+            cout << "COM" << i << ": exchanged " << rep.size() << " cards.\n";
         }
 
         n = 0;
         flag = 0;
         bid_or_pass(bet, flag, n, players);
+        sum = 0;
+        for (int i = 0;i < N;i++) {
+            int a = min(bet, players[i].chip);
+            sum += a;
+            players[i].chip -= a;
+        }
 
         vector<int> card_sum;
         for (int i = 0;i < N;i++) {
