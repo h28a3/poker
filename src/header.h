@@ -28,10 +28,12 @@ public:
 
 extern vector<card> deck;
 extern int player_score[N]; //プレイヤーとCOMのスコア(score関数参照)
+extern vector<card> discard;
 
 void initialization(void);
 int score(vector<card> v);
 vector<int> strategy(vector<card> v);
 void show_card(int n, vector<card> cards);
 void show_chip(int n, int chip);
-void bid_or_pass(int& bet, int& flag, int& n, player *players);
+void bid_or_pass(int& bet, int& flag, int &flag_2, int& n, player *players);
+void call_or_raise(int& bet, int& flag, int& flag_2, int& n, player* players);
