@@ -1,5 +1,5 @@
 # poker
-## introduction
+## Introduction
 I was wondering what to implement next after having implemented blackjack the other day, when I had an opportunity to play poker with a friend and decided to implement poker. I found it difficult because I was not familiar with the rules and the game.
 The computer's strategy is mechanically determined by the cards in the hand, so there is no bluffing or other strategies. (I think it is easy to win if you know how to choose the cards to exchange, and the conditions for bidding and raising...) It would be interesting to use machine learning in the future.
 
