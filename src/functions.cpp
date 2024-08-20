@@ -124,6 +124,9 @@ vector<int> strategy(vector<card> v) { //COMのカード交換戦略
     for (int i = 0;i < 5;i++) {
         ans.push_back(i);
     }
+    for (int i = 0; i < ans.size(); i++) {
+        discard.push_back(v[i]);
+    }
     return ans;
 }
 
@@ -140,7 +143,10 @@ void show_card(int n, vector<card> cards) { //カード出力
         if (cards[i].c == 'h') cout << "heart";
         if (cards[i].c == 'd') cout << "diamond";
         if (cards[i].c == 'c') cout << "club";
-        cout << cards[i].num << ", ";
+        cout << cards[i].num;
+        if (i < 4) {
+            cout << ", ";
+        }
     }
     cout << ".\n";
 }
@@ -155,10 +161,11 @@ void show_chip(int n, int chip) { //チップの残り枚数出力
     cout << chip << " chip(s) left.\n";
 }
 
-void bid_or_pass(int &bet, int &flag, int &n, player *players) {
+void bid_or_pass(int &bet, int &flag, int &flag_2, int &n, player *players) {
     int tmp = bet;
     for (int i = 1;i < N;i++) {
-        if (player_score[i] > 2) { //COMはスリーカードより良い役のときはビッド
+        n = i;
+        if (player_score[i] > 1) { //COMはツーペアより良い役のときはビッド
             if (bet >= players[i].chip) {
                 cout << "COM" << i << ": all in\n";
                 flag++;
@@ -167,9 +174,8 @@ void bid_or_pass(int &bet, int &flag, int &n, player *players) {
             cout << "COM" << i << ": bid，";
             int r = rand() % (MAX - bet) + 1;
             r = min(r, players[i].chip);
-            cout << "add " << r << " more.\n";
+            cout << "add " << r << " more chip(s).\n";
             bet += r;
-            n = i;
             flag = 0;
             break;
         }
@@ -179,17 +185,83 @@ void bid_or_pass(int &bet, int &flag, int &n, player *players) {
         }
     }
 
-    if (tmp == bet) {
-        cout << "pass or bid(0: pass，1: bid)";
+    if (tmp == bet && flag_2 == 0) {
+        cout << "pass or bid or fold(0: pass，1: bid, 2: fold)";
         int input;
         cin >> input;
         flag++;
+        n = 0;
         if (input == 1) {
             cout << "How many would you like to add?(Up to " << min(MAX, players[0].chip) - bet << " can be added.)";
             cin >> input;
             bet += input;
-            n = 0;
             flag = 0;
+        }
+        else if (input == 2) {
+            flag_2 = 1;
+            players[0].chip -= min(bet, players[0].chip);
+        }
+    }
+}
+
+void call_or_raise(int& bet, int& flag, int& flag_2, int& n, player* players) {
+    if (n > 0 && n < N - 1) {
+        for (int i = n + 1;i < N;i++) {
+            n = i;
+            if (player_score[i] > 4) { //COMはフラッシュより良い役のときはレイズ
+                if (bet >= players[i].chip) {
+                    cout << "COM" << i << ": all in\n";
+                    flag++;
+                    continue;
+                }
+                cout << "COM" << i << ": raise, ";
+                int r = rand() % 4 + 1;
+                r = min(r, players[i].chip);
+                cout << "add" << r << " more chip(s).\n";
+                bet += r;
+                flag = 0;
+            }
+            else {
+                cout << "COM" << i << ": call\n";
+                flag++;
+            }
+        }
+    }
+
+    while (flag < N - 1 && bet < MAX) {
+        n = (n + 1) % N;
+        if (player_score[n] > 5 && n != 0) {
+            if (bet >= players[n].chip) {
+                cout << "COM" << n << ": all in\n";
+                flag++;
+                continue;
+            }
+            cout << "COM" << n << ": raise, ";
+            int r = rand() % (MAX - bet) + 1;
+            r = min(r, players[n].chip);
+            cout << "add" << r << " more chip(s).\n";
+            bet += r;
+            flag = 0;
+        }
+        else if (n != 0) {
+            cout << "COM" << n << ": call\n";
+            flag++;
+        }
+        else if (flag_2 == 0) {
+            cout << "call or raise or fold(0: call, 1: raise, 2: fold)";
+            int input;
+            cin >> input;
+            flag++;
+            if (input == 1) {
+                cout << "How many chips would you like to add?(Up to " << min(MAX, players[0].chip) - bet << " can be added.)";
+                cin >> input;
+                bet += input;
+                flag = 0;
+            }
+            else if (input == 2) {
+                flag_2 = 1;
+                players[0].chip -= min(bet, players[0].chip);
+            }
         }
     }
 }
