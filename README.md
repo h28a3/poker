@@ -1,9 +1,9 @@
-# poker
+# Poker
 ## Introduction
 I was wondering what to implement next after having implemented blackjack the other day, when I had an opportunity to play poker with a friend and decided to implement poker. I found it difficult because I was not familiar with the rules and the game.
 The computer's strategy is mechanically determined by the cards in the hand, so there is no bluffing or other strategies. (I think it is easy to win if you know how to choose the cards to exchange, and the conditions for bidding and raising...) It would be interesting to use machine learning in the future.
 
-## hands (in order of strength)
+## Hands (in order of strength)
 1. Royal Straight Flush  
    The highest ranked flush of the same kind, 10, J, Q, K, A.
 2. Straight Flush  
@@ -23,7 +23,7 @@ Three cards of the same rank.
 9. One pair  
 Two cards of the same rank. When two hands are equal, the pairs are compared, and the higher ranked pair wins. If they are also equal, the player with the ♠ in the pair wins.
 
-## rules
+## Rules
 1. Each player puts one chip on the field as a participation chip.
 2. The parent deals out the well-cut cards, one face down from the person to the left, so that there are five cards in each hand. The remainder are considered stock.
 3. Looking at the cards dealt, the players declare "bid" or "pass" in turn, starting with the person to the left of the parent. Once one person bids, no one after that can pass. The first person to bid says how many chips he or she has and puts them on the table.(It is advisable to decide on the maximum number of chips.)
