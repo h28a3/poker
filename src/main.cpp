@@ -2,6 +2,7 @@
 
 vector<card> deck; //山札
 int player_score[N]; //プレイヤーとCOMのスコア(score関数参照)
+vector<card> discard;
 
 int main(void) {
     int judge = 1; //ループ判定用変数
@@ -28,106 +29,44 @@ int main(void) {
 
         int n = 0;
         int flag = 0;
+        int flag_2 = 0;
 
-        bid_or_pass(bet, flag, n, players);
+        bid_or_pass(bet, flag, flag_2, n, players);
+        call_or_raise(bet, flag, flag_2, n, players);
 
-        if (n > 0 && n < N - 1) {
-            for (int i = n + 1;i < N;i++) {
-                n = i;
-                if (player_score[i] > 4) { //COMはフラッシュより良い役のときはレイズ
-                    if (bet >= players[i].chip) {
-                        cout << "COM" << i << ": all in\n";
-                        flag++;
-                        continue;
-                    }
-                    cout << "COM" << i << ": raise, ";
-                    int r = rand() % 4 + 1;
-                    r = min(r, players[i].chip);
-                    cout << "add" << r << " more.\n";
-                    bet += r;
-                    flag = 0;
-                }
-                else {
-                    cout << "COM" << i << ": call\n";
-                    flag++;
+        if (flag_2 == 0) {
+            cout << "How many cards would you like to exchange?";
+            cin >> n;
+            if (n == 5) { //5枚全て交換するとき
+                for (int i = 0;i < 5;i++) {
+                    int r = rand() % (32 - i);
+                    players[0].cards[i] = deck[r];
+                    deck.erase(deck.begin() + r);
                 }
             }
-        }
-
-        while (flag < N - 1 && bet < MAX) {
-            n = (n + 1) % N;
-            if (player_score[n] > 5 && n != 0) {
-                if (bet >= players[n].chip) {
-                    cout << "COM" << n << ": all in\n";
-                    flag++;
-                    continue;
-                }
-                cout << "COM" << n << ": raise, ";
-                int r = rand() % (MAX - bet) + 1;
-                r = min(r, players[n].chip);
-                cout << "add" << r << " more.\n";
-                bet += r;
-                flag = 0;
-            }
-            else if (n != 0) {
-                cout << "COM" << n << ": call\n";
-                flag++;
-            }
-            else {
-                cout << "call or raise(0: call, 1: raise)";
-                int input;
-                cin >> input;
-                flag++;
-                if (input == 1) {
-                    cout << "How many chips would you like to add?(Up to " << min(MAX, players[0].chip) - bet << " can be added.)";
-                    cin >> input;
-                    bet += input;
-                    flag = 0;
+            else if (n > 0) {
+                cout << "Which card(s) would you like to replace? (Enter separated by spaces)";
+                for (int i = 0;i < n;i++) {
+                    int rep;
+                    cin >> rep;
+                    discard.push_back(players[0].cards[rep - 1]);
+                    int r = rand() % (32 - i);
+                    players[0].cards[rep - 1] = deck[r];
+                    deck.erase(deck.begin() + r);
                 }
             }
+            show_card(0, players[0].cards); //交換後のプレイヤーのカード出力
         }
-
-        int sum = 0; //場に出ているチップの総数
-
-        for (int i = 0;i < N;i++) {
-            int a = min(bet, players[i].chip);
-            sum += a;
-            players[i].chip -= a;
-        }
-
-        int rest = 52 - 5 * N; //山札の残り枚数
-        cout << "How many cards would you like to exchange?";
-        cin >> n;
-        rest -= n;
-        if (n == 5) { //5枚全て交換するとき
-            for (int i = 0;i < 5;i++) {
-                int r = rand() % (32 - i);
-                players[0].cards[i] = deck[r];
-                deck.erase(deck.begin() + r);
-            }
-        }
-        else if (n > 0) {
-            cout << "Which card(s) would you like to replace? (Enter separated by spaces)";
-            for (int i = 0;i < n;i++) {
-                int rep;
-                cin >> rep;
-                int r = rand() % (32 - i);
-                players[0].cards[rep-1] = deck[r];
-                deck.erase(deck.begin() + r);
-            }
-        }
-
-        show_card(0, players[0].cards); //交換後のプレイヤーのカード出力
 
         for (int i = 1;i < N;i++) {
             vector<int> rep = strategy(players[i].cards); //COMが交換するカード
             for (int j : rep) {
-                int r = rand() % (rest);
+                int r = rand() % (deck.size());
                 players[i].cards[j] = deck[r];
                 deck.erase(deck.begin() + r);
-                rest--;
-                if (rest == 0) {
-                    initialization();
+                if (deck.size() == 0) {
+                    copy(discard.begin(), discard.end(), deck.begin());
+                    discard.clear();
                 }
             }
             cout << "COM" << i << ": exchanged " << rep.size() << " cards.\n";
@@ -135,9 +74,12 @@ int main(void) {
 
         n = 0;
         flag = 0;
-        bid_or_pass(bet, flag, n, players);
-        sum = 0;
+        bid_or_pass(bet, flag, flag_2, n, players);
+        int sum = 0;
         for (int i = 0;i < N;i++) {
+            if (i == 0 && flag_2 == 1) {
+                continue;
+            }
             int a = min(bet, players[i].chip);
             sum += a;
             players[i].chip -= a;
@@ -145,6 +87,11 @@ int main(void) {
 
         vector<int> card_sum;
         for (int i = 0;i < N;i++) {
+            if (i == 0 && flag_2 == 1) {
+                card_sum.push_back(0);
+                player_score[0] = 0;
+                continue;
+            }
             player_score[i] = score(players[i].cards);
             int a = 0;
             for (int j = 0;j < 5;j++) {
